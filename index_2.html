@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LedgerLab — Chartered Accountants for Growing Businesses</title>
+<meta name="description" content="LedgerLab is a Bengaluru-based chartered accountancy practice helping startups and growing businesses with tax, compliance, virtual CFO services, fundraising support and valuations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101a2c;
+    --navy:#13223c;
+    --navy-2:#1b3257;
+    --teal:#1f8a82;
+    --teal-light:#7fc9bd;
+    --amber:#c98a3b;
+    --paper:#f6f4ee;
+    --paper-2:#ffffff;
+    --ash:#5c6675;
+    --ash-light:#8b93a0;
+    --line:#e4e1d8;
+    --line-dark:rgba(255,255,255,0.14);
+    --radius:14px;
+    --shadow: 0 20px 50px -25px rgba(16,26,44,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  h1,h2,h3,h4{font-family:'Fraunces', serif;font-weight:600;margin:0;letter-spacing:-0.01em;}
+  p{margin:0;line-height:1.65;color:var(--ash);}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--teal);
+    font-weight:500;
+  }
+  .eyebrow .sep{color:var(--ash-light);margin:0 8px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  section{position:relative;}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  .reveal-stagger > * { transition-delay: calc(var(--i, 0) * 90ms); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal, .reveal-stagger > *{transition:none !important; opacity:1 !important; transform:none !important;}
+    *{animation:none !important;}
+  }
+
+  :focus-visible{outline:2px solid var(--teal); outline-offset:3px; border-radius:4px;}
+
+  /* ===== NAV ===== */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:22px 0;
+    transition:padding .35s ease, background .35s ease, box-shadow .35s ease;
+  }
+  header.scrolled{
+    padding:13px 0;
+    background:rgba(246,244,238,0.86);
+    backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:0 1px 0 var(--line);
+  }
+  .nav-row{display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{
+    display:grid;
+    grid-template-columns:repeat(3, 9px);
+    grid-template-rows:repeat(2, 9px);
+    gap:3px;
+  }
+  .brand-mark span{width:9px;height:9px;background:var(--navy);border-radius:2px;}
+  .brand-mark span:nth-child(3),
+  .brand-mark span:nth-child(5){background:var(--teal);}
+  .brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:21px; color:var(--ink);}
+  .brand-name em{font-style:normal; color:var(--teal);}
+  nav ul{display:flex;gap:34px;align-items:center;}
+  nav a:not(.btn){
+    font-size:14.5px; font-weight:500; color:var(--navy);
+    position:relative; padding:4px 0;
+  }
+  nav a:not(.btn)::after{
+    content:''; position:absolute; left:0; bottom:-2px; width:0; height:1.5px;
+    background:var(--teal); transition:width .25s ease;
+  }
+  nav a:not(.btn):hover::after{width:100%;}
+  .nav-right{display:flex; align-items:center; gap:28px;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:9px;
+    padding:12px 22px; border-radius:999px;
+    font-size:14px; font-weight:600; letter-spacing:0.01em;
+    cursor:pointer; border:1px solid transparent;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--navy); color:#fff;}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 26px -12px rgba(19,34,60,0.55);}
+  .btn-ghost{background:transparent; border-color:var(--line);color:var(--navy);}
+  .btn-ghost:hover{border-color:var(--navy); transform:translateY(-2px);}
+  .btn-teal{background:var(--teal); color:#fff;}
+  .btn-teal:hover{transform:translateY(-2px); box-shadow:0 14px 26px -12px rgba(31,138,130,0.55);}
+
+  .menu-toggle{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;}
+  .menu-toggle span{width:22px; height:2px; background:var(--navy); border-radius:2px; transition:.3s;}
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:168px 0 100px;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(31,138,130,0.07), transparent 38%),
+      var(--paper);
+    position:relative;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(19,34,60,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(19,34,60,0.05) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom, black, transparent 70%);
+    -webkit-mask-image:linear-gradient(to bottom, black, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center;
+    position:relative; z-index:1;
+  }
+  .hero-copy h1{
+    font-size:clamp(40px, 5vw, 64px);
+    line-height:1.05;
+    margin:18px 0 22px;
+    color:var(--ink);
+  }
+  .hero-copy h1 .accent{color:var(--teal); font-style:italic; font-weight:500;}
+  .hero-copy > p{font-size:18px; max-width:480px; margin-bottom:34px;}
+  .hero-actions{display:flex; gap:16px; align-items:center; flex-wrap:wrap;}
+  .hero-note{margin-top:30px; display:flex; gap:10px; align-items:center; font-size:13px; color:var(--ash-light);}
+  .hero-note .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+
+  /* Ledger widget — signature element */
+  .ledger-card{
+    background:var(--navy);
+    border-radius:18px;
+    padding:30px 30px 26px;
+    color:#fff;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .ledger-card::after{
+    content:'';
+    position:absolute; top:-60px; right:-60px; width:200px; height:200px;
+    background:radial-gradient(circle, rgba(31,138,130,0.35), transparent 70%);
+  }
+  .ledger-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px; position:relative; z-index:1;}
+  .ledger-head .mono{font-size:11.5px; letter-spacing:0.12em; color:var(--teal-light); text-transform:uppercase;}
+  .ledger-head h4{font-size:17px; color:#fff; font-weight:500;}
+  .ledger-rows{border-top:1px solid var(--line-dark); position:relative; z-index:1;}
+  .ledger-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:13px 0; border-bottom:1px solid var(--line-dark);
+    font-size:13.5px;
+  }
+  .ledger-row .label{display:flex; align-items:center; gap:10px; color:#cfd6e2;}
+  .ledger-row .code{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--teal-light); width:34px;}
+  .ledger-row .val{font-family:'IBM Plex Mono', monospace; font-variant-numeric:tabular-nums; color:#fff; font-weight:500;}
+  .ledger-total{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:16px; margin-top:4px; position:relative; z-index:1;
+  }
+  .ledger-total .label{font-size:13px; color:var(--teal-light); letter-spacing:0.05em; text-transform:uppercase; font-family:'IBM Plex Mono', monospace;}
+  .ledger-total .val{font-family:'IBM Plex Mono', monospace; font-size:26px; font-weight:600; color:#fff;}
+  .bars{display:flex; align-items:flex-end; gap:6px; height:46px; margin-top:18px; position:relative; z-index:1;}
+  .bars span{flex:1; background:linear-gradient(180deg, var(--teal-light), var(--teal)); border-radius:3px 3px 0 0; height:0%; transition:height 1.1s cubic-bezier(.2,.9,.25,1);}
+  .ledger-card.in-view .bars span{ }
+
+  /* ===== WHY SECTION ===== */
+  .why{padding:30px 0 110px;}
+  .section-head{max-width:620px; margin-bottom:54px;}
+  .section-head h2{font-size:clamp(30px,3.4vw,42px); margin-top:14px; line-height:1.15;}
+  .section-head p{margin-top:16px; font-size:16.5px;}
+
+  .why-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:16px; overflow:hidden;}
+  .why-card{background:var(--paper-2); padding:38px 32px;}
+  .why-icon{
+    width:46px; height:46px; border-radius:11px;
+    background:rgba(31,138,130,0.1); color:var(--teal);
+    display:flex; align-items:center; justify-content:center; margin-bottom:22px;
+  }
+  .why-card h3{font-size:19px; margin-bottom:10px; font-weight:600;}
+  .why-card p{font-size:14.5px;}
+
+  /* ===== BANNER ===== */
+  .banner{
+    background:linear-gradient(120deg, var(--navy) 0%, var(--navy-2) 55%, #0e3d4f 100%);
+    padding:80px 0;
+    color:#fff;
+    overflow:hidden;
+    position:relative;
+  }
+  .banner::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size:46px 46px;
+  }
+  .banner-grid{display:flex; justify-content:space-between; align-items:center; gap:40px; position:relative; z-index:1; flex-wrap:wrap;}
+  .banner h2{font-size:clamp(28px,3.6vw,40px); color:#fff; line-height:1.18;}
+  .banner h2 span{color:var(--teal-light); font-style:italic; font-weight:500;}
+  .banner-stats{display:flex; gap:46px; flex-wrap:wrap;}
+  .stat .num{font-family:'IBM Plex Mono', monospace; font-size:34px; font-weight:600; color:#fff;}
+  .stat .lbl{font-size:12.5px; color:#a9b4c4; margin-top:4px; max-width:120px;}
+
+  /* ===== SERVICES ===== */
+  .services{padding:110px 0;}
+  .services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:50px;}
+  .service-card{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:var(--radius);
+    padding:30px 28px 26px; position:relative;
+    transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  .service-card:hover{border-color:var(--teal); transform:translateY(-5px); box-shadow:var(--shadow);}
+  .service-card .scode{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--teal); letter-spacing:0.08em;
+    display:block; margin-bottom:16px;
+  }
+  .service-card h3{font-size:19px; margin-bottom:14px; font-weight:600; line-height:1.25;}
+  .service-card ul{display:flex; flex-direction:column; gap:9px;}
+  .service-card li{
+    font-size:14px; color:var(--ash); display:flex; align-items:baseline; gap:9px;
+  }
+  .service-card li::before{
+    content:''; width:5px; height:5px; border-radius:50%; background:var(--teal-light); flex-shrink:0; transform:translateY(-2px);
+  }
+  .service-card::after{
+    content:''; position:absolute; left:0; top:24px; bottom:24px; width:2px; background:transparent; border-radius:2px; transition:background .3s ease;
+  }
+  .service-card:hover::after{background:var(--teal);}
+
+  /* ===== ABOUT ===== */
+  .about{padding:30px 0 110px;}
+  .about-grid{display:grid; grid-template-columns:0.85fr 1.15fr; gap:70px; align-items:center;}
+  .about-visual{
+    background:var(--ink); border-radius:18px; padding:36px; color:#fff; position:relative; overflow:hidden;
+  }
+  .about-visual .qmark{font-family:'Fraunces', serif; font-style:italic; font-size:64px; color:var(--teal-light); line-height:1; margin-bottom:8px;}
+  .about-visual p{color:#dce1ea; font-size:16.5px; line-height:1.6;}
+  .about-visual .sign{margin-top:26px; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--teal-light); letter-spacing:0.08em; text-transform:uppercase;}
+  .about-copy .eyebrow{margin-bottom:14px; display:block;}
+  .about-copy h2{font-size:clamp(28px,3.2vw,38px); line-height:1.18; margin-bottom:20px;}
+  .about-copy p{font-size:16px; margin-bottom:16px;}
+  .about-list{margin-top:26px; display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .about-list li{
+    display:flex; align-items:center; gap:10px; font-size:14.5px; color:var(--navy); font-weight:500;
+  }
+  .about-list li svg{flex-shrink:0; color:var(--teal);}
+
+  /* ===== TRUST STRIP ===== */
+  .trust{background:var(--navy); padding:0;}
+  .trust-grid{display:grid; grid-template-columns:repeat(3,1fr);}
+  .trust-item{
+    padding:38px 36px; display:flex; gap:18px; align-items:flex-start;
+    border-right:1px solid var(--line-dark);
+  }
+  .trust-item:last-child{border-right:none;}
+  .trust-item .ti-icon{color:var(--teal-light); flex-shrink:0; margin-top:2px;}
+  .trust-item h4{color:#fff; font-size:16px; font-weight:600; margin-bottom:5px;}
+  .trust-item p{color:#aab4c3; font-size:13.5px;}
+
+  /* ===== CONTACT ===== */
+  .contact{padding:110px 0;}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:70px;}
+  .contact-info h2{font-size:clamp(28px,3.2vw,38px); margin:14px 0 18px; line-height:1.18;}
+  .contact-info > p{font-size:16px; max-width:420px; margin-bottom:34px;}
+  .contact-channel{
+    display:flex; gap:16px; align-items:flex-start; padding:18px 0; border-top:1px solid var(--line);
+  }
+  .contact-channel:last-of-type{border-bottom:1px solid var(--line);}
+  .contact-channel .ci{
+    width:38px;height:38px; border-radius:10px; background:rgba(31,138,130,0.1); color:var(--teal);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .contact-channel .ct-label{font-size:12px; color:var(--ash-light); text-transform:uppercase; letter-spacing:0.08em; font-family:'IBM Plex Mono', monospace; margin-bottom:4px;}
+  .contact-channel .ct-value{font-size:15.5px; font-weight:600; color:var(--ink);}
+  .contact-channel .ct-value a:hover{color:var(--teal);}
+  .cities{display:flex; gap:10px; margin-top:30px;}
+  .city-pill{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; padding:8px 14px; border-radius:999px;
+    border:1px solid var(--line); color:var(--navy); letter-spacing:0.04em;
+  }
+
+  .contact-form{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:18px; padding:36px;
+    box-shadow:var(--shadow);
+  }
+  .contact-form h3{font-size:19px; margin-bottom:6px;}
+  .contact-form > p{font-size:13.5px; margin-bottom:24px;}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field.full{grid-column:1 / -1;}
+  .field label{font-size:12.5px; font-weight:600; color:var(--navy);}
+  .field input, .field select, .field textarea{
+    border:1px solid var(--line); border-radius:9px; padding:11px 13px; font-family:'Inter', sans-serif;
+    font-size:14px; color:var(--ink); background:var(--paper); transition:border-color .2s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--teal); outline:none;}
+  .field textarea{resize:vertical; min-height:90px;}
+  .form-foot{display:flex; align-items:center; justify-content:space-between; margin-top:6px; flex-wrap:wrap; gap:14px;}
+  .form-note{font-size:12px; color:var(--ash-light);}
+  .form-status{font-size:13px; color:var(--teal); font-weight:600; min-height:18px;}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--ink); padding:60px 0 28px; color:#aab4c3;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding-bottom:40px; border-bottom:1px solid var(--line-dark);}
+  .footer-brand .brand-name{color:#fff;}
+  .footer-brand p{margin-top:16px; font-size:13.5px; max-width:280px; color:#94a0b3;}
+  .footer-col h5{font-size:12.5px; text-transform:uppercase; letter-spacing:0.1em; color:#7d8aa0; font-family:'IBM Plex Mono', monospace; margin-bottom:16px; font-weight:500;}
+  .footer-col ul{display:flex; flex-direction:column; gap:11px;}
+  .footer-col a{font-size:14px; color:#cdd5e0; transition:color .2s ease;}
+  .footer-col a:hover{color:var(--teal-light);}
+  .footer-bottom{display:flex; justify-content:space-between; align-items:center; padding-top:24px; font-size:12.5px; color:#7d8aa0; flex-wrap:wrap; gap:10px;}
+
+  /* ===== WHATSAPP FLOAT ===== */
+  .wa-float{
+    position:fixed; bottom:24px; right:24px; z-index:99;
+    width:56px; height:56px; border-radius:50%;
+    background:#25d366; color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px rgba(37,211,102,0.45);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .wa-float:hover{transform:scale(1.08); box-shadow:0 12px 32px rgba(37,211,102,0.55);}
+  .wa-float svg{width:28px; height:28px;}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:980px){
+    .hero-grid, .about-grid, .contact-grid{grid-template-columns:1fr; gap:48px;}
+    .about-grid{direction:ltr;}
+    .why-grid{grid-template-columns:1fr;}
+    .services-grid{grid-template-columns:1fr 1fr;}
+    .trust-grid{grid-template-columns:1fr;}
+    .trust-item{border-right:none; border-bottom:1px solid var(--line-dark);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:760px){
+    /* Layout */
+    .wrap{padding:0 18px;}
+
+    /* Nav — hide everything except logo + hamburger */
+    nav ul{display:none;}
+    .menu-toggle{display:flex;}
+    .nav-right .btn-ghost{display:none;}
+    .nav-right .btn-primary{display:none;}
+    header{padding:16px 0;}
+    header.scrolled{padding:12px 0;}
+
+    /* Hero */
+    .hero{padding:110px 0 60px;}
+    .hero-copy h1{font-size:clamp(32px,8vw,44px); margin:14px 0 16px;}
+    .hero-copy > p{font-size:16px; margin-bottom:26px;}
+    .hero-actions{gap:12px;}
+    .hero-actions .btn{padding:13px 20px; font-size:14px; width:100%; justify-content:center;}
+    .hero-note{font-size:12px; margin-top:22px;}
+
+    /* Sections spacing */
+    .why{padding:20px 0 72px;}
+    .why-card{padding:28px 22px;}
+    .services{padding:72px 0;}
+    .services-grid{grid-template-columns:1fr; gap:16px;}
+    .service-card{padding:24px 20px 20px;}
+    .about{padding:20px 0 72px;}
+    .about-visual{padding:28px 24px;}
+    .about-visual .qmark{font-size:48px;}
+    .about-visual p{font-size:15px;}
+    .about-list{grid-template-columns:1fr;}
+    .contact{padding:72px 0;}
+    .contact-grid{gap:40px;}
+    .contact-form{padding:26px 20px;}
+    .banner{padding:56px 0;}
+    .banner-grid{flex-direction:column; align-items:flex-start; gap:32px;}
+    .banner-stats{gap:28px;}
+    .stat .num{font-size:28px;}
+
+    /* Form */
+    .form-row{grid-template-columns:1fr;}
+    .field input, .field select, .field textarea{
+      font-size:16px; /* prevents iOS zoom on focus */
+      padding:13px 14px;
+    }
+    .form-foot{flex-direction:column; align-items:stretch;}
+    .form-foot .btn{width:100%; justify-content:center; padding:15px;}
+
+    /* Trust */
+    .trust-item{padding:28px 22px;}
+
+    /* Footer */
+    .footer-grid{grid-template-columns:1fr; gap:32px;}
+    .footer-bottom{flex-direction:column; text-align:center; gap:6px;}
+
+    /* Cities */
+    .cities{flex-wrap:wrap; gap:8px;}
+
+    /* Section heads */
+    .section-head{margin-bottom:36px;}
+    .section-head h2{font-size:clamp(26px,7vw,34px);}
+    .section-head p{font-size:15px;}
+
+    /* WhatsApp float — shift up on mobile so it doesn't cover content */
+    .wa-float{bottom:20px; right:16px; width:52px; height:52px;}
+  }
+
+  /* mobile nav panel */
+  .mobile-nav{
+    position:fixed; top:0; right:0; height:100vh; width:78%; max-width:320px;
+    background:var(--paper-2); z-index:200; padding:30px 28px;
+    transform:translateX(100%); transition:transform .35s ease; box-shadow:-10px 0 40px rgba(0,0,0,0.15);
+    display:flex; flex-direction:column; gap:26px;
+    overflow-y:auto;
+  }
+  .mobile-nav.open{transform:translateX(0);}
+  .mobile-nav a{font-size:17px; font-weight:600; color:var(--navy);}
+  .mobile-nav .close-btn{align-self:flex-end; background:none; border:none; font-size:22px; cursor:pointer; color:var(--ash);}
+  .mobile-nav .nav-contact{
+    margin-top:auto; padding-top:24px; border-top:1px solid var(--line);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .mobile-nav .nav-contact a{font-size:14px; font-weight:500; color:var(--ash);}
+  .scrim{position:fixed; inset:0; background:rgba(16,26,44,0.4); z-index:199; opacity:0; pointer-events:none; transition:opacity .3s ease;}
+  .scrim.open{opacity:1; pointer-events:auto;}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header id="siteHeader">
+  <div class="wrap nav-row">
+    <a href="#top" class="brand">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span><span></span><span></span></span>
+      <span class="brand-name">Ledger<em>Lab</em></span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <a href="tel:+919986764414" class="btn btn-ghost">+91 99867 64414</a>
+      <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn" id="closeMenu" aria-label="Close menu">&times;</button>
+  <a href="#why">Why Us</a>
+  <a href="#services">Services</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+  <a href="#contact" class="btn btn-teal" style="justify-content:center; margin-top:6px;">Book a Consultation</a>
+  <div class="nav-contact">
+    <a href="tel:+919986764414">📞 +91 99867 64414</a>
+    <a href="mailto:support@ledgerlab.com">✉️ support@ledgerlab.com</a>
+    <span style="font-size:13px; color:var(--ash-light);">Bengaluru · Mumbai · Pan-India</span>
+  </div>
+</div>
+
+<!-- WhatsApp Float -->
+<a class="wa-float" href="https://wa.me/919986764414?text=Hi%20LedgerLab%2C%20I%27d%20like%20to%20enquire%20about%20your%20services." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal in-view">
+      <span class="eyebrow">Finance <span class="sep">/</span> Taxation <span class="sep">/</span> Compliance</span>
+      <h1>Precision in <span class="accent">every number</span>, built for growing businesses.</h1>
+      <p>A Bengaluru-based chartered accountancy practice helping founders and finance teams stay compliant, raise capital, and make decisions with clean, current numbers.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-teal">Book a Consultation</a>
+        <a href="#services" class="btn btn-ghost">Explore Services</a>
+      </div>
+      <div class="hero-note"><span class="dot"></span> Founded and led by practising Chartered Accountants — serving businesses across India</div>
+    </div>
+
+    <div class="ledger-card reveal" id="ledgerCard">
+      <div class="ledger-head">
+        <div>
+          <div class="mono">Practice Snapshot</div>
+          <h4>What we run for clients</h4>
+        </div>
+      </div>
+      <div class="ledger-rows">
+        <div class="ledger-row"><div class="label"><span class="code">LL-01</span>Tax &amp; Compliance</div><div class="val">Monthly</div></div>
+        <div class="ledger-row"><div class="label"><span class="code">LL-02</span>Virtual CFO Reporting</div><div class="val">Real-time</div></div>
+        <div class="ledger-row"><div class="label"><span class="code">LL-03</span>Fundraising Support</div><div class="val">On-demand</div></div>
+        <div class="ledger-row"><div class="label"><span class="code">LL-04</span>Valuation &amp; Due Diligence</div><div class="val">As-needed</div></div>
+      </div>
+      <div class="ledger-total">
+        <div class="label">Cities Served</div>
+        <div class="val"><span class="counter" data-target="2">0</span></div>
+      </div>
+      <div class="bars" aria-hidden="true">
+        <span style="--h:32%"></span><span style="--h:48%"></span><span style="--h:40%"></span>
+        <span style="--h:64%"></span><span style="--h:58%"></span><span style="--h:82%"></span><span style="--h:100%"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY ===== -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why LedgerLab</span>
+      <h2>Compliance is the floor. We build from there.</h2>
+      <p>We combine deep financial expertise with modern technology to deliver clarity, ensure compliance, and accelerate growth — so you can focus on building what's next.</p>
+    </div>
+    <div class="why-grid reveal-stagger">
+      <div class="why-card reveal" style="--i:0">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg>
+        </div>
+        <h3>Business-first approach</h3>
+        <p>Practical advice focused on your goals, not just compliance — every recommendation is weighed against what actually moves your business forward.</p>
+      </div>
+      <div class="why-card reveal" style="--i:1">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 17 9 11 13 15 21 6"/><polyline points="15 6 21 6 21 12"/></svg>
+        </div>
+        <h3>Startup &amp; investor focused</h3>
+        <p>From incorporation to fundraising, we've got you covered with the financial discipline investors expect from day one.</p>
+      </div>
+      <div class="why-card reveal" style="--i:2">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/><polyline points="9 12 11 14 15 9.5"/></svg>
+        </div>
+        <h3>Technology-enabled execution</h3>
+        <p>Fast, transparent and responsive at every step — dashboards and reporting that keep you informed, not waiting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BANNER ===== -->
+<section class="banner">
+  <div class="wrap banner-grid">
+    <h2 class="reveal">More than compliance.<br><span>We help businesses start, scale and stay compliant.</span></h2>
+    <div class="banner-stats reveal-stagger">
+      <div class="stat reveal" style="--i:0"><div class="num"><span class="counter" data-target="6">0</span></div><div class="lbl">Service lines, end to end</div></div>
+      <div class="stat reveal" style="--i:1"><div class="num"><span class="counter" data-target="2">0</span></div><div class="lbl">Cities — Bengaluru &amp; Mumbai</div></div>
+      <div class="stat reveal" style="--i:2"><div class="num">CA</div><div class="lbl">Led by Chartered Accountants</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Our Services</span>
+      <h2>Six accounts, one ledger — everything your finance function needs.</h2>
+      <p>Each engagement is scoped clearly from day one, so you always know what's being done, when, and why.</p>
+    </div>
+
+    <div class="services-grid reveal-stagger">
+      <div class="service-card reveal" style="--i:0">
+        <span class="scode">LL-01 · TAX &amp; COMPLIANCE</span>
+        <h3>Tax &amp; Compliance</h3>
+        <ul>
+          <li>Income Tax</li>
+          <li>GST</li>
+          <li>TDS</li>
+          <li>ROC Compliance</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" style="--i:1">
+        <span class="scode">LL-02 · STARTUP SETUP</span>
+        <h3>Startup &amp; Business Setup</h3>
+        <ul>
+          <li>Company / LLP Incorporation</li>
+          <li>Startup India &amp; MSME Registration</li>
+          <li>ESOP Advisory</li>
+          <li>Regulatory Registrations</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" style="--i:2">
+        <span class="scode">LL-03 · VIRTUAL CFO</span>
+        <h3>Virtual CFO</h3>
+        <ul>
+          <li>MIS &amp; Dashboards</li>
+          <li>Budgeting</li>
+          <li>Cash Flow Management</li>
+          <li>KPI Reporting</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" style="--i:3">
+        <span class="scode">LL-04 · FUNDRAISING</span>
+        <h3>Fundraising &amp; Transactions</h3>
+        <ul>
+          <li>Financial Modelling</li>
+          <li>Investor Readiness</li>
+          <li>Pitch Deck Financials</li>
+          <li>Cap Table Advisory</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" style="--i:4">
+        <span class="scode">LL-05 · VALUATION</span>
+        <h3>Valuation &amp; Due Diligence</h3>
+        <ul>
+          <li>Business Valuation</li>
+          <li>Startup Valuation</li>
+          <li>Financial Due Diligence (FDD)</li>
+          <li>Vendor Due Diligence</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" style="--i:5">
+        <span class="scode">LL-06 · ADVISORY</span>
+        <h3>Business Advisory</h3>
+        <ul>
+          <li>Internal Controls</li>
+          <li>SOP Design</li>
+          <li>Risk Advisory</li>
+          <li>Process Improvement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-visual reveal">
+      <div class="qmark">“</div>
+      <p>Built by Chartered Accountants. Trusted by growing businesses. We bring clarity to the numbers so founders can focus on what they do best — building.</p>
+      <div class="sign">— The LedgerLab Practice</div>
+    </div>
+    <div class="about-copy reveal">
+      <span class="eyebrow">About LedgerLab</span>
+      <h2>Built by Chartered Accountants. Trusted by growing businesses.</h2>
+      <p>We combine deep financial expertise with modern technology to deliver solutions that bring clarity, ensure compliance and accelerate growth — so you can focus on building what's next.</p>
+      <p>Whether you're incorporating your first entity, preparing for a funding round, or simply need a finance function that runs like clockwork, LedgerLab works as an extension of your team.</p>
+      <ul class="about-list">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Confidential. Reliable. Always.</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Clear communication, honest advice</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Timely, proactive support</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Pan-India reach from Bengaluru &amp; Mumbai</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST STRIP ===== -->
+<section class="trust">
+  <div class="wrap" style="padding:0 32px;">
+    <div class="trust-grid">
+      <div class="trust-item reveal">
+        <div class="ti-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/><polyline points="9 12 11 14 15 9.5"/></svg></div>
+        <div><h4>Trusted</h4><p>Confidential. Reliable. Always.</p></div>
+      </div>
+      <div class="trust-item reveal">
+        <div class="ti-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 12l3 3 7-7"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div><h4>Transparent</h4><p>Clear communication. Honest advice.</p></div>
+      </div>
+      <div class="trust-item reveal">
+        <div class="ti-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg></div>
+        <div><h4>Responsive</h4><p>Timely support. Proactive solutions.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-info reveal">
+      <span class="eyebrow">Get in Touch</span>
+      <h2>Let's talk about your numbers.</h2>
+      <p>Tell us a little about your business and what you need help with — we typically respond within one business day.</p>
+
+      <div class="contact-channel">
+        <div class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg></div>
+        <div><div class="ct-label">Email</div><div class="ct-value"><a href="mailto:support@ledgerlab.com">support@ledgerlab.com</a></div></div>
+      </div>
+      <div class="contact-channel">
+        <div class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div><div class="ct-label">Phone</div><div class="ct-value"><a href="tel:+919986764414">+91 99867 64414</a></div></div>
+      </div>
+      <div class="contact-channel">
+        <div class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="ct-label">Offices</div><div class="ct-value">Bengaluru &amp; Mumbai — serving businesses across India</div></div>
+      </div>
+
+      <div class="cities">
+        <span class="city-pill">BENGALURU</span>
+        <span class="city-pill">MUMBAI</span>
+        <span class="city-pill">PAN-INDIA</span>
+      </div>
+    </div>
+
+    <form class="contact-form reveal" id="contactForm" data-endpoint="https://script.google.com/macros/s/AKfycbwGeWfBcCII4O7RWNsB01jWqC9OSkS4aeovxx--yfRr9GLWFeFAMUKlFsO8uiqFK7i5LQ/exec">
+      <h3>Request a consultation</h3>
+      <p>Fill this in and we'll get back to you shortly.</p>
+      <div class="form-row">
+        <div class="field">
+          <label for="fname">Full name</label>
+          <input id="fname" name="name" type="text" placeholder="Your name" required>
+        </div>
+        <div class="field">
+          <label for="femail">Email</label>
+          <input id="femail" name="email" type="email" placeholder="you@company.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="fphone">Phone</label>
+          <input id="fphone" name="phone" type="tel" placeholder="+91 ">
+        </div>
+        <div class="field">
+          <label for="fservice">I'm interested in</label>
+          <select id="fservice" name="service">
+            <option>Tax &amp; Compliance</option>
+            <option>Startup &amp; Business Setup</option>
+            <option>Virtual CFO</option>
+            <option>Fundraising &amp; Transactions</option>
+            <option>Valuation &amp; Due Diligence</option>
+            <option>Business Advisory</option>
+          </select>
+        </div>
+      </div>
+      <div class="field full" style="margin-bottom:18px;">
+        <label for="fmsg">Message</label>
+        <textarea id="fmsg" name="message" placeholder="Tell us briefly about your business and what you need."></textarea>
+      </div>
+      <div class="form-foot">
+        <button type="submit" class="btn btn-teal">Send Message</button>
+        <span class="form-status" id="formStatus"></span>
+      </div>
+      <p class="form-note" style="margin-top:14px;">Prefer email? Write to us directly at <a href="mailto:support@ledgerlab.com" style="color:var(--teal); font-weight:600;">support@ledgerlab.com</a></p>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="brand">
+          <span class="brand-mark"><span></span><span></span><span></span><span></span><span></span><span></span></span>
+          <span class="brand-name">Ledger<em style="color:var(--teal-light); font-style:normal;">Lab</em></span>
+        </a>
+        <p>Finance, taxation and compliance for growing businesses — built by Chartered Accountants, trusted across India.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Tax &amp; Compliance</a></li>
+          <li><a href="#services">Virtual CFO</a></li>
+          <li><a href="#services">Fundraising &amp; Transactions</a></li>
+          <li><a href="#services">Valuation &amp; Due Diligence</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#why">Why LedgerLab</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:support@ledgerlab.com">support@ledgerlab.com</a></li>
+          <li><a href="tel:+919986764414">+91 99867 64414</a></li>
+          <li><span style="color:#94a0b3;">Bengaluru · Mumbai</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> LedgerLab. All rights reserved.</span>
+      <span>Precision in Every Number.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Nav scroll state
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => {
+    if (window.scrollY > 30) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  };
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  // Mobile nav
+  const menuToggle = document.getElementById('menuToggle');
+  const closeMenu = document.getElementById('closeMenu');
+  const mobileNav = document.getElementById('mobileNav');
+  const scrim = document.getElementById('scrim');
+  const openNav = () => { mobileNav.classList.add('open'); scrim.classList.add('open'); };
+  const closeNav = () => { mobileNav.classList.remove('open'); scrim.classList.remove('open'); };
+  menuToggle.addEventListener('click', openNav);
+  closeMenu.addEventListener('click', closeNav);
+  scrim.addEventListener('click', closeNav);
+  document.querySelectorAll('.mobile-nav a').forEach(a => a.addEventListener('click', closeNav));
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Bars grow when ledger card in view
+  const ledgerCard = document.getElementById('ledgerCard');
+  const barIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelectorAll('.bars span').forEach(bar => {
+          bar.style.height = bar.style.getPropertyValue('--h');
+        });
+        barIO.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  if (ledgerCard) barIO.observe(ledgerCard);
+
+  // Counter animation
+  const counters = document.querySelectorAll('.counter');
+  const counterIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.getAttribute('data-target'), 10);
+        const duration = 900;
+        const start = performance.now();
+        const step = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(eased * target);
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        counterIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterIO.observe(c));
+
+  // Contact form — submits to a Google Apps Script web app, which logs
+  // each entry as a row in a Google Sheet and emails a notification.
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  const endpoint = form.dataset.endpoint;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const name = document.getElementById('fname').value.trim();
+    const formData = new FormData(form);
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    status.style.color = 'var(--teal)';
+    status.textContent = '';
+
+    // Apps Script web apps don't return CORS headers Claude can read in the
+    // browser, so the request is sent "no-cors" — it still arrives and is
+    // processed server-side, but the response itself is opaque to us here.
+    fetch(endpoint, { method: 'POST', mode: 'no-cors', body: formData })
+      .then(() => {
+        status.textContent = name ? `Thanks, ${name.split(' ')[0]} — we'll be in touch shortly.` : `Thanks — we'll be in touch shortly.`;
+        form.reset();
+      })
+      .catch(() => {
+        status.style.color = '#c0392b';
+        status.textContent = 'Something went wrong — please email us directly at support@ledgerlab.com.';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      });
+  });
+</script>
+</body>
+</html>
